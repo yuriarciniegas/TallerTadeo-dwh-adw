@@ -77,8 +77,8 @@ create table if not exists dim_product (
 
     product_key INT(8) NOT NULL AUTO_INCREMENT,
     product_id INT(11) NOT NULL,
-    category_key INT(8) NULL DEFAULT NULL,
-    subcategory_key INT(8) NULL DEFAULT NULL,
+    category_id INT(8) NULL DEFAULT NULL,
+    subcategory_id INT(8) NULL DEFAULT NULL,
     product_Name NVARCHAR(100) NULL DEFAULT NULL,
     product_color NVARCHAR(100) NULL DEFAULT NULL,
     product_size NVARCHAR(100) NULL DEFAULT NULL,
@@ -87,16 +87,8 @@ create table if not exists dim_product (
     product_last_update DATETIME NOT NULL DEFAULT (CURRENT_DATE),
 
      PRIMARY KEY (product_key),
-     UNIQUE INDEX product_id (product_id) VISIBLE,
+     UNIQUE INDEX product_id (product_id) VISIBLE
 
-     index category_key (category_key),
-     FOREIGN KEY (category_key)
-     references dim_category (category_key),
-
-    index subcategory_key (subcategory_key),
-    FOREIGN KEY(subcategory_key)
-     references dim_subcategory (subcategory_key)
- 
 );
 
 -- Hechos ventas
@@ -108,13 +100,18 @@ CREATE TABLE IF NOT EXISTS fact_ventas (
   date_key     	  int(8)   not null,
   location_key    INT(8) NOT NULL,
   product_key     INT(8) NOT NULL,
+  category_key    INT(8) NOT NULL,
+  subcategory_key INT(8)  NOT NULL,
 
-  count_returns INT(10) NOT NULL,
+  linetotal INT(10) NOT NULL,
   count_Ventas INT(8) NOT NULL,
 
   INDEX fk_location_idx (location_key ASC) VISIBLE,
   INDEX fk_product_idx (product_key ASC) VISIBLE,
   INDEX fk_date_idx (date_key ASC) VISIBLE,
+  INDEX fk_category_idx (category_key ASC) VISIBLE,
+ INDEX fk_subcategory_idx (subcategory_key ASC) VISIBLE,
+
 
 
   CONSTRAINT fk_location
@@ -133,15 +130,17 @@ CREATE TABLE IF NOT EXISTS fact_ventas (
   FOREIGN KEY (date_key)
   REFERENCES dim_time (date_key)
   ON DELETE CASCADE
+  ON UPDATE NO ACTION,
+
+  CONSTRAINT fk_category
+  FOREIGN KEY (category_key)
+  REFERENCES dim_category (category_key)
+  ON DELETE CASCADE
+  ON UPDATE NO ACTION,
+
+  CONSTRAINT fk_subcategory
+  FOREIGN KEY (subcategory_key)
+  REFERENCES dim_subcategory (subcategory_key)
+  ON DELETE CASCADE
   ON UPDATE NO ACTION
 );
-
-
-
-
-
-
-
-
-
-
