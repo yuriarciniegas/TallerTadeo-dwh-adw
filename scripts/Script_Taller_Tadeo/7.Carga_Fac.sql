@@ -1,3 +1,17 @@
+-- Inserta los datos en la tabla de hechos
+-- a partir de una consulta
+INSERT INTO fact_ventas (
+    date_key,
+    location_key,
+    product_key,
+    category_key ,
+    subcategory_key,
+    linetotal,
+    count_Ventas
+)
+
+WITH datos AS (
+
 SELECT 
 st.location_key, 
 p.product_key ,
@@ -16,4 +30,21 @@ inner join dim_subcategory sb on pp.ProductSubcategoryID = sb.subcategory_id
 inner join adw.Production_ProductSubcategory ps on pp.ProductSubcategoryID = ps.ProductSubcategoryID
 inner join adw.Production_ProductCategory pc on pc.ProductCategoryID = ps.ProductCategoryID 
 inner join dim_category cat on cat.category_id  = pc.ProductCategoryID
-LIMIT 5;
+)
+
+SELECT 
+    date_key,
+    location_key,
+    product_key,
+    category_key ,
+    subcategory_key,
+    SUM(linetotal),
+    SUM(count_Ventas)
+FROM datos
+GROUP BY 
+    date_key,
+    location_key,
+    product_key,
+    category_key ,
+    subcategory_key
+;

@@ -97,7 +97,7 @@ CREATE TABLE IF NOT EXISTS fact_ventas (
   
   ventas_id INT(11) NULL DEFAULT NULL,
 
-  date_key     	  int(8)   not null,
+  date_key     	  int(8) not null,
   location_key    INT(8) NOT NULL,
   product_key     INT(8) NOT NULL,
   category_key    INT(8) NOT NULL,

@@ -20,4 +20,3 @@ p.Weight,
 p.ListPrice
 FROM adw.Production_Product as p
 inner join adw.Production_ProductSubcategory as ps on p.ProductSubcategoryID=ps.ProductSubcategoryID
-limit 5;
